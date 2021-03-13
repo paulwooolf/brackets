@@ -7,10 +7,24 @@ module.exports = function check(str, bracketsConfig) {
     let result = true;
     const brackets = Object.fromEntries(bracketsConfig);
     const stack = [];
+    const string = [];
+    let char = '<';
+    str.split('').reverse().map((item, index, arr) => {
+        if (item === '|') {
+            char = char === '<' ? '>' : '<'
+            string.push(char);
 
-    str.split('').reverse().forEach((item, index) => {
+        } else if (item === '|') {
+            char = char === '<' ? '>' : '<'
+            string.push(char);
+        } else {
+            string.push(item);
+        }
+    });
+    string.forEach((item, index) => {
         if (item in brackets) {
-            if (brackets[item] !== stack.pop()) {
+            let last = stack.pop();
+            if (brackets[item] !== last) {
                 result = false;
             }
         } else {
